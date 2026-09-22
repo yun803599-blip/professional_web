@@ -6,16 +6,26 @@
   const closeMenu = () => {
     if (!menuButton || !mobileMenu) return;
     menuButton.setAttribute("aria-expanded", "false");
+    menuButton.setAttribute("aria-label", "展开导航");
+    mobileMenu.setAttribute("aria-hidden", "true");
     mobileMenu.classList.remove("is-open");
   };
 
   menuButton?.addEventListener("click", () => {
     const isOpen = menuButton.getAttribute("aria-expanded") === "true";
     menuButton.setAttribute("aria-expanded", String(!isOpen));
+    menuButton.setAttribute("aria-label", isOpen ? "展开导航" : "关闭导航");
+    mobileMenu?.setAttribute("aria-hidden", String(isOpen));
     mobileMenu?.classList.toggle("is-open", !isOpen);
   });
 
   mobileMenu?.querySelectorAll("a").forEach((link) => link.addEventListener("click", closeMenu));
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeMenu();
+  });
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 700) closeMenu();
+  }, { passive: true });
 
   // Header scroll state
   const onScroll = () => {
@@ -50,17 +60,18 @@
   }
 
   // Reveal on scroll
-  const observer = new IntersectionObserver(
-    (entries) => entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("is-visible");
-        observer.unobserve(entry.target);
-      }
-    }),
-    { threshold: 0.08, rootMargin: "0px 0px -40px" },
-  );
-
-  document.querySelectorAll(".reveal").forEach((element) => observer.observe(element));
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(
+      (entries) => entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      }),
+      { threshold: 0.08, rootMargin: "0px 0px -40px" },
+    );
+    document.querySelectorAll(".reveal").forEach((element) => observer.observe(element));
+  }
   document.querySelectorAll("[data-year]").forEach((element) => { element.textContent = String(new Date().getFullYear()); });
 
   const marketGrid = document.querySelector("[data-market-grid]");
@@ -95,11 +106,15 @@
   const resetBtn = document.querySelector("[data-edit-reset]");
   let editing = false;
 
+  if (new URLSearchParams(window.location.search).get("edit") === "1") {
+    document.documentElement.classList.add("is-edit-enabled");
+  }
+
   const setEditing = (on) => {
     editing = on;
     document.documentElement.classList.toggle("is-editing", on);
     toggleBtn?.setAttribute("aria-pressed", String(on));
-    if (toggleBtn) toggleBtn.textContent = on ? "✓ 完成" : "✏️ 编辑";
+    if (toggleBtn) toggleBtn.textContent = on ? "完成" : "编辑";
     editables().forEach((el) => { el.setAttribute("contenteditable", on ? "true" : "false"); });
   };
 

@@ -93,15 +93,17 @@ export default function Home() {
   return (
     <main>
       <header className="site-header" data-header>
-        <a className="wordmark" href="#top" aria-label="作品集首页"><span className="wordmark-mark">P</span><span>Private Portfolio</span></a>
+        <a className="wordmark" href="#top" aria-label="作品集首页"><span className="wordmark-mark">AI</span><span>AI Systems Portfolio</span></a>
         <nav aria-label="主导航"><a href="#work">项目 Work</a><a href="#capabilities">能力 Capabilities</a><a href="#notes">笔记 Notes</a><a href="#about">关于 About</a></nav>
-        <a className="header-contact" href="#contact">联系我 · Contact</a>
-        <button className="menu-button" type="button" aria-label="展开导航" aria-expanded="false" data-menu-button><span /><span /></button>
+        <div className="header-actions">
+          <a className="header-contact" href="#contact">联系我 · Contact</a>
+          <button className="menu-button" type="button" aria-label="展开导航" aria-expanded="false" aria-controls="mobile-navigation" data-menu-button><span /><span /></button>
+        </div>
       </header>
-      <div className="mobile-menu" data-mobile-menu><a href="#work">精选项目 · Work</a><a href="#capabilities">专业能力 · Capabilities</a><a href="#notes">专业笔记 · Notes</a><a href="#about">关于我 · About</a><a href="#contact">联系我 · Contact</a></div>
+      <div className="mobile-menu" id="mobile-navigation" aria-hidden="true" data-mobile-menu><a href="#work">精选项目 · Work</a><a href="#capabilities">专业能力 · Capabilities</a><a href="#notes">专业笔记 · Notes</a><a href="#about">关于我 · About</a><a href="#contact">联系我 · Contact</a></div>
 
       <section className="hero" id="top">
-        <div className="eyebrow"><span /><span data-editable="hero-eyebrow">I work across four layers of enterprise AI</span></div>
+        <div className="eyebrow"><span className="eyebrow-dot" aria-hidden="true" /><span data-editable="hero-eyebrow">Enterprise AI Product · System Design · Governance</span></div>
         <h1 data-editable="hero-title">Build AI systems people can actually <em>trust</em> and use.</h1>
         <p className="hero-subtitle" data-editable="hero-subtitle">让 AI 真正进入业务流程，并保持可控、可信、可持续。</p>
         <div className="hero-bottom">
@@ -140,7 +142,7 @@ export default function Home() {
                   <p><strong>结果 · Outcome</strong><span data-editable={`proj-${project.number}-outcome`}>{project.outcome}</span></p>
                 </div>
               </div>
-              <div className="project-footer"><div className="tag-list">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div><p className="project-metric" data-editable={`proj-${project.number}-metric`}>{project.metric}</p><a href="#contact" aria-label={`查看 ${project.title}`}>查看案例 <span>↗</span></a></div>
+              <div className="project-footer"><div className="tag-list">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div><p className="project-metric" data-editable={`proj-${project.number}-metric`}>{project.metric}</p><span className="project-proof">案例摘要 · Case Summary</span></div>
             </article>
           ))}
         </div>
@@ -173,9 +175,9 @@ export default function Home() {
       </section>
 
       <section className="notes-section" id="notes">
-        <div className="notes-heading reveal"><div><p>专业笔记 · Selected Notes</p><h2>持续思考，也谨慎表达。</h2></div><a href="#notes">查看全部笔记 · All Notes ↗</a></div>
+        <div className="notes-heading reveal"><div><p>专业笔记 · Selected Notes</p><h2>持续思考，也谨慎表达。</h2></div><span className="notes-status">完整文章整理中 · In Progress</span></div>
         <div className="notes-grid">
-          {notes.map((note, index) => <article className="note-card reveal" key={note.title}><span>0{index + 1}</span><p className="note-type" data-editable={`note-${index + 1}-type`}>{note.type}</p><h3 data-editable={`note-${index + 1}-title`}>{note.title}</h3><p data-editable={`note-${index + 1}-text`}>{note.text}</p><a href="#contact">阅读笔记 · Read <span>↗</span></a></article>)}
+          {notes.map((note, index) => <article className="note-card reveal" key={note.title}><span>0{index + 1}</span><p className="note-type" data-editable={`note-${index + 1}-type`}>{note.type}</p><h3 data-editable={`note-${index + 1}-title`}>{note.title}</h3><p data-editable={`note-${index + 1}-text`}>{note.text}</p><span className="note-status">文章整理中 · Coming Soon</span></article>)}
         </div>
       </section>
 
@@ -184,17 +186,17 @@ export default function Home() {
         <div className="about-copy reveal">
           <h2 data-editable="about-title">我负责连接 AI 的技术可能，与企业的真实运行。</h2>
           <p data-editable="about-copy">我的工作位于产品决策、系统可靠性、治理控制与组织采用的交叉位置。我帮助团队走出孤立的演示，建立人们能够理解、信任并持续使用的 AI 产品与运行机制。</p>
-          <div className="about-actions"><a className="button button-dark" href="#contact">下载简历 · Resume <span>↓</span></a><a href="#work">查看项目经历 ↗</a></div>
+          <div className="about-actions"><a className="button button-dark" href="#contact">联系与合作 · Contact <span>↘</span></a><a href="#work">查看项目经历 ↗</a></div>
         </div>
         <div className="about-facts reveal"><div><span>专注方向 · Focus</span><p>企业 AI 系统 · Enterprise AI</p></div><div><span>工作领域 · Across</span><p>产品 · 工程 · 治理 · 组织落地</p></div><div><span>所在地 · Based in</span><p>中国 · 支持远程协作</p></div></div>
       </section>
 
       <footer id="contact">
-        <div className="footer-top reveal"><p>有一个复杂的 AI 问题？ · Let’s Talk</p><h2 data-editable="footer-heading">让它可用、可控，并真正发生。</h2><a href="mailto:hello@example.com"><span data-editable="footer-email">hello@example.com</span> <span>↗</span></a></div>
-        <div className="footer-bottom"><p>© <span data-year>2026</span> Private Professional Portfolio</p><div><a href="#top">返回顶部 ↑</a><a href="#">LinkedIn</a><a href="#">邮件 Email</a></div></div>
+        <div className="footer-top reveal"><p>有一个复杂的 AI 问题？ · Let’s Talk</p><h2 data-editable="footer-heading">让它可用、可控，并真正发生。</h2><p className="contact-pending">联系方式待更新 · Contact details coming soon</p></div>
+        <div className="footer-bottom"><p>© <span data-year>2026</span> AI Systems Portfolio</p><div><a href="#top">返回顶部 ↑</a><span>LinkedIn · 待更新</span><span>Email · 待更新</span></div></div>
       </footer>
       <div className="edit-panel" data-edit-panel>
-        <button type="button" data-edit-toggle aria-pressed="false">✏️ 编辑</button>
+        <button type="button" data-edit-toggle aria-pressed="false">编辑</button>
         <button type="button" data-edit-export>导出 JSON</button>
         <button type="button" data-edit-reset>重置</button>
       </div>

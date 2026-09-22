@@ -63,12 +63,13 @@ section, footer { scroll-margin-top: 84px; }
 .wordmark-mark {
   display: grid;
   place-items: center;
-  width: 30px; height: 30px;
+  width: 34px; height: 34px;
   border: 1px solid currentColor;
   border-radius: 50%;
   transition: background .3s var(--ease), color .3s var(--ease), transform .3s var(--ease);
 }
 .wordmark:hover .wordmark-mark { background: var(--accent); color: var(--ink); transform: rotate(8deg); }
+.header-actions { justify-self: end; display: flex; align-items: center; gap: 10px; }
 .site-header nav { display: flex; gap: 34px; }
 .site-header nav a {
   position: relative;
@@ -89,7 +90,6 @@ section, footer { scroll-margin-top: 84px; }
 .site-header nav a:hover, .site-header nav a.is-active { opacity: 1; }
 .site-header nav a:hover::after, .site-header nav a.is-active::after { transform: scaleX(1); }
 .header-contact {
-  justify-self: end;
   padding: 8px 16px;
   border: 1px solid rgba(242,240,233,.3);
   border-radius: 999px;
@@ -128,7 +128,8 @@ section, footer { scroll-margin-top: 84px; }
   color: rgba(242,240,233,.7);
   font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
 }
-.eyebrow span {
+.eyebrow-dot {
+  flex: 0 0 auto;
   width: 7px; height: 7px; border-radius: 50%;
   background: var(--accent);
   box-shadow: 0 0 0 5px rgba(216,255,95,.14);
@@ -378,14 +379,12 @@ section, footer { scroll-margin-top: 84px; }
 .tag-list { display: flex; flex-wrap: wrap; gap: 6px; }
 .tag-list span { padding: 7px 10px; border: 1px solid rgba(23,37,31,.32); font-size: 11px; }
 .project-metric { margin: 0 0 0 auto; font-size: 11px; font-weight: 700; }
-.project-footer a {
+.project-proof {
   display: inline-flex; align-items: center; gap: 6px;
   font-weight: 700;
-  border-bottom: 1px solid;
+  opacity: .62;
   padding-bottom: 3px;
-  transition: gap .25s var(--ease);
 }
-.project-footer a:hover { gap: 12px; }
 
 /* ============ Process ============ */
 .process-section {
@@ -495,13 +494,12 @@ section, footer { scroll-margin-top: 84px; }
   font-size: clamp(46px, 6vw, 82px);
   font-weight: 400; letter-spacing: -.05em;
 }
-.notes-heading a {
+.notes-status {
   padding-bottom: 5px;
   border-bottom: 1px solid;
   font-size: 11px; text-transform: uppercase; letter-spacing: .1em;
-  transition: color .25s var(--ease);
+  color: var(--muted);
 }
-.notes-heading a:hover { color: var(--muted); }
 .notes-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -524,13 +522,12 @@ section, footer { scroll-margin-top: 84px; }
   font-size: 30px; font-weight: 400; line-height: 1.12; letter-spacing: -.035em;
 }
 .note-card p { margin: 0 0 30px; color: var(--muted); font-size: 13px; line-height: 1.65; }
-.note-card a {
+.note-status {
   display: inline-flex; align-items: center; gap: 6px;
   margin-top: auto;
+  color: var(--muted);
   font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
-  transition: gap .25s var(--ease);
 }
-.note-card a:hover { gap: 12px; }
 
 /* ============ About ============ */
 .about-section {
@@ -563,15 +560,13 @@ footer {
   font-size: clamp(52px, 7.2vw, 110px);
   font-weight: 400; line-height: .95; letter-spacing: -.055em;
 }
-.footer-top > a {
+.contact-pending {
   display: inline-flex; align-items: center; gap: 30px;
   padding-bottom: 8px;
   border-bottom: 1px solid var(--accent);
   color: var(--accent);
   font-size: clamp(20px, 2vw, 30px);
-  transition: gap .25s var(--ease);
 }
-.footer-top > a:hover { gap: 42px; }
 .footer-bottom {
   display: flex; justify-content: space-between; gap: 30px;
   padding-top: 24px;
@@ -584,9 +579,13 @@ footer {
 .footer-bottom a { transition: color .2s var(--ease); }
 .footer-bottom a:hover { color: var(--accent); }
 
-/* ============ Reveal ============ */
-.reveal { opacity: 0; transform: translateY(26px); transition: opacity .8s var(--ease), transform .8s var(--ease); }
-.reveal.is-visible { opacity: 1; transform: none; }
+/* ============ Reveal (content stays visible without JS and in full-page captures) ============ */
+.reveal { opacity: 1; transform: none; }
+.reveal.is-visible { animation: reveal-in .8s var(--ease) both; }
+@keyframes reveal-in {
+  from { opacity: .25; transform: translateY(22px); }
+  to { opacity: 1; transform: none; }
+}
 
 /* ============ Mobile nav (only shown <=700px) ============ */
 .menu-button, .mobile-menu { display: none; }
@@ -613,8 +612,11 @@ footer {
 @media (max-width: 700px) {
   section, footer { scroll-margin-top: 72px; }
   .site-header, .site-header.is-scrolled { height: 64px; }
-  .header-contact { font-size: 0; padding: 8px 12px; }
-  .header-contact::after { content: "Contact"; font-size: 11px; }
+  .site-header { padding-inline: 20px; }
+  .wordmark { gap: 9px; font-size: 10px; }
+  .wordmark-mark { width: 30px; height: 30px; }
+  .header-actions { gap: 8px; }
+  .header-contact { display: none; }
   .menu-button {
     display: flex; flex-direction: column; gap: 6px;
     justify-content: center; align-items: center;
@@ -637,27 +639,28 @@ footer {
   .mobile-menu.is-open { transform: none; }
   .mobile-menu a { padding: 16px 0; border-bottom: 1px solid rgba(242,240,233,.15); font-size: 18px; }
 
-  .hero { min-height: 720px; padding-top: 120px; }
-  .hero h1 { font-size: clamp(54px, 18vw, 90px); }
+  .hero { min-height: 720px; padding-top: 118px; padding-bottom: 84px; }
+  .eyebrow { margin-bottom: 28px; font-size: 9px; line-height: 1.5; letter-spacing: .12em; }
+  .hero h1 { font-size: clamp(52px, 17vw, 86px); }
   .hero-actions { flex-direction: column; align-items: stretch; }
   .scroll-note { display: none; }
   .section-heading { grid-template-columns: 1fr; gap: 20px; }
   .capability-grid { grid-template-columns: 1fr; }
   .capability-card, .capability-card:nth-child(3) { min-height: 250px; border-left: 1px solid var(--line); }
 
-  .capabilities-preview, .work-section, .evidence-section, .process-section, .notes-section, .about-section { padding-top: 90px; padding-bottom: 100px; }
+  .capabilities-preview, .work-section, .evidence-section, .process-section, .notes-section, .about-section { padding-top: 78px; padding-bottom: 84px; }
   .work-intro { grid-template-columns: 1fr; gap: 24px; margin: 45px 0 55px; }
   .project-card { padding: 18px; }
-  .project-visual { height: 180px; }
+  .project-visual { height: 155px; }
   .project-body { padding-bottom: 30px; }
   .project-detail { grid-template-columns: 1fr; }
   .project-footer { align-items: flex-end; flex-wrap: wrap; }
   .project-metric { order: 3; margin: 10px 0 0; width: 100%; }
   .evidence-grid { grid-template-columns: repeat(2, 1fr); }
-  .evidence-card { aspect-ratio: auto; min-height: 240px; padding: 15px; }
+  .evidence-card { aspect-ratio: auto; min-height: 210px; padding: 15px; }
   .notes-heading { align-items: start; flex-direction: column; }
   .notes-grid { grid-template-columns: 1fr; }
-  .note-card { min-height: 320px; border-left: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .note-card { min-height: 280px; border-left: 1px solid var(--line); border-bottom: 1px solid var(--line); }
   .about-section { grid-template-columns: 1fr; }
   .about-facts { grid-column: auto; }
   .footer-bottom { flex-direction: column; }
@@ -665,8 +668,8 @@ footer {
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .reveal { opacity: 1; transform: none; transition: none; }
-  .orbit, .orbit-two, .orbit-dot, .eyebrow span, .status-dot::before, .route::before { animation: none !important; }
+  .reveal, .reveal.is-visible { opacity: 1; transform: none; animation: none; }
+  .orbit, .orbit-two, .orbit-dot, .eyebrow-dot, .status-dot::before, .route::before { animation: none !important; }
   * { transition-duration: .01ms !important; }
 }
 
@@ -674,13 +677,14 @@ footer {
 .edit-panel {
   position: fixed;
   right: 20px; bottom: 20px; z-index: 60;
-  display: flex; gap: 8px; align-items: center;
+  display: none; gap: 8px; align-items: center;
   padding: 8px;
   background: var(--ink);
   border: 1px solid rgba(242,240,233,.2);
   border-radius: 999px;
   box-shadow: 0 14px 40px rgba(0,0,0,.35);
 }
+.is-edit-enabled .edit-panel { display: flex; }
 .edit-panel button {
   appearance: none;
   padding: 8px 14px;
