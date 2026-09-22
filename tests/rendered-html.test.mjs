@@ -28,7 +28,7 @@ test("public view hides editing tools and keeps reveal content available", async
   assert.match(css, /\.eyebrow-dot\s*\{/);
   assert.match(css, /\.reveal\s*\{\s*opacity:\s*1;\s*transform:\s*none;/);
   assert.match(css, /\.edit-panel\s*\{[\s\S]*?display:\s*none;/);
-  assert.match(css, /\.is-edit-enabled \.edit-panel\s*\{\s*display:\s*flex;/);
+  assert.match(css, /\.edit-panel\.is-enabled\s*\{\s*display:\s*flex;/);
   assert.match(css, /@media \(prefers-reduced-motion:\s*reduce\)/);
   assert.match(css, /@media \(max-width:\s*700px\)[\s\S]*?\.header-contact\s*\{\s*display:\s*none;/);
 });
@@ -40,5 +40,6 @@ test("mobile navigation and opt-in editor expose accessible state", async () => 
   assert.match(script, /setAttribute\("aria-label", isOpen \? "展开导航" : "关闭导航"\)/);
   assert.match(script, /event\.key === "Escape"/);
   assert.match(script, /get\("edit"\) === "1"/);
-  assert.match(script, /classList\.add\("is-edit-enabled"\)/);
+  assert.match(script, /classList\.add\("is-enabled"\)/);
+  assert.match(script, /window\.addEventListener\("load"/);
 });

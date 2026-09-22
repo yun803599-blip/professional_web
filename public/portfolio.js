@@ -104,10 +104,13 @@
   const toggleBtn = document.querySelector("[data-edit-toggle]");
   const exportBtn = document.querySelector("[data-edit-export]");
   const resetBtn = document.querySelector("[data-edit-reset]");
+  const editPanel = document.querySelector("[data-edit-panel]");
   let editing = false;
 
   if (new URLSearchParams(window.location.search).get("edit") === "1") {
-    document.documentElement.classList.add("is-edit-enabled");
+    window.addEventListener("load", () => {
+      window.setTimeout(() => editPanel?.classList.add("is-enabled"), 1200);
+    }, { once: true });
   }
 
   const setEditing = (on) => {
